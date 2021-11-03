@@ -21,35 +21,42 @@ class Forecast {
 
 }
 
-// let createDescription = (element) => {
-//     let des = `"Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weater.description}"`
-//     return des;
-// }
+let createDescription = (element) => {
+    let des = `"Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weather.description}"`
+    return des;
+}
 
 let searchWeather = (req,res) => {
     let searchReference = req.query;
-    let cityResponse = weather.find(element => {
+    
+    console.log(searchReference);
 
-        if(element.city_name.toLowerCase() === searchReference.city_name.toLowerCase() && Math.floor(element.lat) == Math.floor(searchReference.lat) && Math.floor(element.lon) == Math.floor(searchReference.lon)){
-            let dayForecast = [];
+    let cityResponse = weather.find(element => element.city_name.toLowerCase() === searchReference.city_name.toLowerCase() && Math.floor(element.lat) == Math.floor(searchReference.lat) && Math.floor(element.lon) == Math.floor(searchReference.lon));
+    
+    console.log(cityResponse);
 
-            element.data.map(element => {
-                let des = `Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weather.description}`;
-                let date = element.valid_date;
-                dayForecast.push(new Forecast(date,des));
+    if(cityResponse){
+
+        let dayForecast = [];
+
+        cityResponse.data.map(element => {
+            let des = createDescription(element);
+            let date = element.valid_date;
+            dayForecast.push(new Forecast(date,des));
             });
 
-            res.send(dayForecast);
-            res.send(console.log(element));
-        }
-        else {
+        res.send(dayForecast);
+        res.send(console.log(element));
+        
+    }
+    else{
             res.status(403).send('not found')
         }
-    });
-
-
-
 }
+
+
+
+
 
 
 app.get('/hello',sendHello)
