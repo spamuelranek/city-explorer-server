@@ -7,7 +7,7 @@ const app = express();
 
 app.use(cors());
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001;
 
 let sendHello = (req,res) => {
     console.log('this stuff is so cool');
@@ -77,4 +77,4 @@ app.get('/*',errorControl)
 
 
 
-app.listen(3001, () => console.log(`I'm A Live! And i am listen at port: ${PORT}`))
+app.listen(PORT, () => console.log(`I'm A Live! And i am listen at port: ${PORT}`))
