@@ -35,5 +35,11 @@
 - Name of Feature: Weather
     - Estimate of time needed to complete: 1 hr
     - Start Time: 3:00pm
-    - Finish Time: 3:30pm
-    - Actual time needed to complete: 30min
+    - Finish Time: 10:12pm
+    - Actual time needed to complete: 8 hrs minus 1:30 for dinner
+
+- Name of Feature: Errors
+    - Estimate of time needed to complete: 1 hr
+    - Start Time: 10:15pm
+    - Finish Time:
+    - Actual time needed to complete:
