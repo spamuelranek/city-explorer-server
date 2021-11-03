@@ -21,10 +21,10 @@ class Forecast {
 
 }
 
-let createDescription = (element) => {
-    let des = `"description": "Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weater.description}"`
-    return des;
-}
+// let createDescription = (element) => {
+//     let des = `"Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weater.description}"`
+//     return des;
+// }
 
 let searchWeather = (req,res) => {
     let searchReference = req.query;
@@ -34,7 +34,7 @@ let searchWeather = (req,res) => {
             let dayForecast = [];
 
             element.data.map(element => {
-                let des = createDescription(element);
+                let des = `Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weather.description}`;
                 let date = element.valid_date;
                 dayForecast.push(new Forecast(date,des));
             });
