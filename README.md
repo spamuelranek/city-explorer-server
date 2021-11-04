@@ -43,3 +43,15 @@
     - Start Time: 10:15pm
     - Finish Time:
     - Actual time needed to complete:
+
+- Name of Feature: Weather
+    - Estimate of time needed to complete: 1 hr 30 mins
+    - Start Time: 1:12pm
+    - Finish Time:4:13pm
+    - Actual time needed to complete:3hrs
+
+- Name of Feature: Movie
+    - Estimate of time needed to complete: 1 hr 30 mins
+    - Start Time: 4:42pm
+    - Finish Time:
+    - Actual time needed to complete:
