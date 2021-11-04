@@ -16,6 +16,7 @@ const movieAPI = process.env.MOVIE_API_KEY;
 // test life
 let sendHello = (req,res) => {
     console.log('this stuff is so cool');
+    res.send('test');
 }
 
 class Movies {
