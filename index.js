@@ -2,63 +2,110 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const weather = require('./data/weather.json')
+const axios = require('axios');
 
 const app = express();
 
 app.use(cors());
 
 const PORT = process.env.PORT || 3001;
+const weatherAPI = process.env.WEATHER_API_KEY;
+const movieAPI = process.env.MOVIE_API_KEY;
 
+
+// test life
 let sendHello = (req,res) => {
     console.log('this stuff is so cool');
 }
 
-class Forecast {
-    constructor(date,description){
-        this.date = date;
-        this.description = description;
+class Movies {
+    constructor(movie){
+        this.title = movie.original_title;
+        this.overview = movie.overview;
+        this.image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
     }
-
 }
 
-// pulls out the creation of part of the decription that will be passed back to application
-let createDescription = (element) => {
-    let des = `"Low of ${element.low_temp}, high of ${element.high_temp} with ${element.weather.description}"`
-    return des;
-}
+// function to take in location and return movies that are playing in that country
+let searchMovies = async(req,res) => {
+    let movieSearch = req.query.keyword;
 
 
-// function takes in query to check it against teh weather data
-let searchWeather = (req,res) => {
-    let searchReference = req.query;
+    let url = `https://api.themoviedb.org/3/search/movie?api_key=${movieAPI}&language=en-US&query=${movieSearch}&page=1&include_adult=false`;
+
+
+    try{
+
+        let response = await axios(url);
+
+        let moviesUnmod = response.data.results;
+        console.log(moviesUnmod.length);
+
+        let movieMod = moviesUnmod.map(element => new Movies(element));
+
+        console.log(movieMod);
+
+        res.status(200).send(movieMod);
+
+
+    }
+    catch (e) {
+        if(e){
+            res.status(404).send('There was a problem on our end')
+        }
+    }
     
+}
+
+
+// constructor to manage and form the data to send back to the client
+class WeatherForecast {
+    constructor(obj){
+        this.hour = obj.timestamp_local;
+        this.temp = obj.app_temp;
+        this.pop = obj.pop;
+        this.weather = obj.weather;
+    }
+}
+
+
+// function takes in query to request by lat and lon from weather api
+let searchWeather = async(req,res) => {
+    
+    // captures the query object from the client
+    let searchReference = req.query;
     console.log(searchReference);
 
-    //grabs first element that matches there conditionals
-    let cityResponse = weather.find(element => element.city_name.toLowerCase() === searchReference.city_name.toLowerCase() && Math.floor(element.lat) == Math.floor(searchReference.lat) && Math.floor(element.lon) == Math.floor(searchReference.lon));
+    
+    // creates url to use with weather api based off of query object
+    let url = `http://api.weatherbit.io/v2.0/forecast/hourly?lat=${searchReference.lat}&lon=${searchReference.lon}&key=${weatherAPI}&hours=48`;
+    console.log(url);
 
-    //once city response is defined then create Forecast objects
-    if(cityResponse){
+    try{
+        // make the request to weather api
+        let response = await axios(url);
+        console.log(response.data);
 
-        let dayForecast = [];
+        // refer to weather api hourly for form of data
+        // want to capture timestamp_local(forecasted hour), app_temp(apparent temperature), pop(probability of percipitation), weather( the entire object contains: icon, code, description)
+        let returnedHours = response.data.data;
 
-        cityResponse.data.map(element => {
-            let des = createDescription(element);
-            let date = element.valid_date;
-            dayForecast.push(new Forecast(date,des));
-            });
+        // creates array of WeatherForecast Objects
+        let formattedData = returnedHours.map(element => new WeatherForecast(element));
+        console.log(formattedData);
 
-        res.send(dayForecast);
-        res.send(console.log(element));
-        
+        // sends back the array
+        res.status(200).send(formattedData);
+
     }
-
-    // if no element is found send back status 403
-    else{
-            res.status(403).send('not found')
+    catch(e){
+        if(e){
+            res.status(500).send('something is broken')
         }
+    }
 }
 
+// covers all unexpected requests  
 let errorControl = (req,res) => {
     if(req){
         res.status(200).send('Okay');
@@ -71,9 +118,10 @@ let errorControl = (req,res) => {
 
 
 
-app.get('/hello',sendHello)
-app.get('/weather',searchWeather)
-app.get('/*',errorControl)
+app.get('/hello',sendHello);
+app.get('/movies',searchMovies);
+app.get('/weather',searchWeather);
+app.get('/*',errorControl);
 
 
 
