@@ -52,6 +52,6 @@
 
 - Name of Feature: Movie
     - Estimate of time needed to complete: 1 hr 30 mins
-    - Start Time: 4:42pm
-    - Finish Time:
-    - Actual time needed to complete:
+    - Start Time:4:42pm
+    - Finish Time:9:27pm
+    - Actual time needed to complete:4hrs 45 min minus 1 hr for dinner
