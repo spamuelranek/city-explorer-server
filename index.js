@@ -61,8 +61,9 @@ let searchMovies = async(req,res) => {
 // constructor to manage and form the data to send back to the client
 class WeatherForecast {
     constructor(obj){
-        this.hour = obj.timestamp_local;
-        this.temp = obj.app_temp;
+        this.hour = obj.valid_date;
+        this.tempMax = obj.app_max_temp;
+        this.tempMin = obj.app_min_temp
         this.pop = obj.pop;
         this.weather = obj.weather;
     }
@@ -78,7 +79,7 @@ let searchWeather = async(req,res) => {
 
     
     // creates url to use with weather api based off of query object
-    let url = `http://api.weatherbit.io/v2.0/forecast/hourly?lat=${searchReference.lat}&lon=${searchReference.lon}&key=${weatherAPI}&hours=48`;
+    let url = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${searchReference.lat}&lon=${searchReference.lon}&key=${weatherAPI}&days=5`;
     console.log(url);
 
     try{
