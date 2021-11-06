@@ -18,7 +18,8 @@
 
 
 ## Architecture
-- 
+- ![Desgin Map of data flow](lab-09.png)
+- ![Desgin Map of data flow](lab-10.png)
 
 ## Change Log
 - 11-02-2021 3:28pm - Repository is set up

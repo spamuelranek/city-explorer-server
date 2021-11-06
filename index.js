@@ -10,7 +10,6 @@ const searchMovies = require('./movies.js');
 const app = express();
 app.use(cors());
 
-
 const PORT = process.env.PORT || 3001;
 
 // test life
@@ -29,12 +28,9 @@ let errorControl = (req,res) => {
     }
 }
 
-
 app.get('/hello',sendHello);
 app.get('/movies',searchMovies);
 app.get('/weather',searchWeather);
 app.get('/*',errorControl);
-
-
 
 app.listen(PORT, () => console.log(`I'm A Live! And i am listen at port: ${PORT}`))
